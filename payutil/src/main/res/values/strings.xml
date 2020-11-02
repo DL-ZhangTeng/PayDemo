@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name" translatable="false">PayUtil</string>
+    <!-- PayActivity -->
+
+    <!-- WXPayEntryActivity -->
+    <string name="pay_result_tip" translatable="false">这个界面用于显示第三方app通过微信支付的结果</string>
+</resources>

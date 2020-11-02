@@ -1,0 +1,3 @@
+include ':payutil'
+include ':app'
+rootProject.name = "PayDemo"
