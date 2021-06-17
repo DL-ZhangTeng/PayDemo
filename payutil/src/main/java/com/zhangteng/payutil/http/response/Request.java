@@ -58,7 +58,7 @@ public class Request<T extends BaseResponse> {
 
                     @Override
                     public void onError(Throwable e) {
-                        if (!NetworkUtils.isAvailable(BaseApplication.getInstance())) {
+                        if (!NetworkUtils.INSTANCE.isAvailable(BaseApplication.Companion.getInstance())) {
                             result.onNoNetworkError();
                             result.onFinish();
                             return;

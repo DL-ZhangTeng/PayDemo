@@ -56,17 +56,17 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
             switch (resp.errCode) {
                 case 0:
                     EventBus.getDefault().post(new RequestPayResultEventBus(2, 0));
-                    Toast.makeText(BaseApplication.getInstance(), "支付成功", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(BaseApplication.Companion.getInstance(), "支付成功", Toast.LENGTH_SHORT).show();
                     finish();
                     break;
                 case -1:
                     EventBus.getDefault().post(new RequestPayResultEventBus(2, -1));
-                    Toast.makeText(BaseApplication.getInstance(), "支付出错", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(BaseApplication.Companion.getInstance(), "支付出错", Toast.LENGTH_SHORT).show();
                     finish();
                     break;
                 case -2:
                     EventBus.getDefault().post(new RequestPayResultEventBus(2, -2));
-                    Toast.makeText(BaseApplication.getInstance(), "取消支付", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(BaseApplication.Companion.getInstance(), "取消支付", Toast.LENGTH_SHORT).show();
                     finish();
                     break;
             }

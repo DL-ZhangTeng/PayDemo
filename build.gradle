@@ -2,9 +2,10 @@
 buildscript {
     repositories {
         google()
-        jcenter()
-        maven { url 'https://dl.bintray.com/duoluo9/android' }
-        maven { url 'https://dl.bintray.com/duoluo9/FilePicker' }
+        mavenCentral()
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        maven { url 'https://jitpack.io' }
+        maven { url "https://s01.oss.sonatype.org/content/groups/public" }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.1'
@@ -19,9 +20,10 @@ buildscript {
 allprojects {
     repositories {
         google()
-        jcenter()
-        maven { url 'https://dl.bintray.com/duoluo9/android' }
-        maven { url 'https://dl.bintray.com/duoluo9/FilePicker' }
+        mavenCentral()
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        maven { url 'https://jitpack.io' }
+        maven { url "https://s01.oss.sonatype.org/content/groups/public" }
         flatDir {
             dirs project(':payutil').file('libs')
         }

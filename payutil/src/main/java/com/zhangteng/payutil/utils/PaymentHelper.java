@@ -64,7 +64,7 @@ public class PaymentHelper {
             PayTask alipay = new PayTask(activity);
             // 调用支付接口，获取支付结果
             if (TextUtils.isEmpty(alipayEntity.getPrePayOrderInfo())) {
-                ToastUtils.showShort(activity, "无法获取支付信息");
+                ToastUtils.Companion.showShort(activity, "无法获取支付信息");
                 return;
             }
             Map<String, String> result = alipay.payV2(alipayEntity.getPrePayOrderInfo(), true);
@@ -101,21 +101,21 @@ public class PaymentHelper {
                     // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
                     if (TextUtils.equals(resultStatus, "9000")) {
                         EventBus.getDefault().post(new RequestPayResultEventBus(1, 0));
-                        Toast.makeText(BaseApplication.getInstance(), "支付成功", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(BaseApplication.Companion.getInstance(), "支付成功", Toast.LENGTH_SHORT).show();
                     } else {
                         // 判断resultStatus 为非"9000"则代表可能支付失败
                         // "8000"代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
                         if (TextUtils.equals(resultStatus, "8000")) {
                             EventBus.getDefault().post(new RequestPayResultEventBus(1, -3));
-                            Toast.makeText(BaseApplication.getInstance(), "支付结果确认中", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(BaseApplication.Companion.getInstance(), "支付结果确认中", Toast.LENGTH_SHORT).show();
 
                         } else if (TextUtils.equals(resultStatus, "6001")) {
                             EventBus.getDefault().post(new RequestPayResultEventBus(1, -2));
-                            Toast.makeText(BaseApplication.getInstance(), "用户取消支付", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(BaseApplication.Companion.getInstance(), "用户取消支付", Toast.LENGTH_SHORT).show();
                         } else {
                             // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
                             EventBus.getDefault().post(new RequestPayResultEventBus(1, -1));
-                            Toast.makeText(BaseApplication.getInstance(), "支付失败", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(BaseApplication.Companion.getInstance(), "支付失败", Toast.LENGTH_SHORT).show();
 
                         }
                     }

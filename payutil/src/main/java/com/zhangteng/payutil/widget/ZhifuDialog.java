@@ -3,11 +3,12 @@ package com.zhangteng.payutil.widget;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.zhangteng.base.base.BaseDialog;
 import com.zhangteng.base.utils.LoadViewHelper;
@@ -89,12 +90,12 @@ public class ZhifuDialog extends BaseDialog implements PayView {
     private LoadViewHelper loadViewHelper;
 
     public ZhifuDialog(@NonNull Activity context) {
-        super(context);
+        super(context, R.style.SelfDialog);
         this.activity = new WeakReference<>(context);
     }
 
     public ZhifuDialog(@NonNull Activity context, BigDecimal balance, float amount) {
-        super(context);
+        super(context, R.style.SelfDialog);
         this.activity = new WeakReference<>(context);
         setBalance(balance);
         setPaymentAmount(amount);
@@ -126,6 +127,7 @@ public class ZhifuDialog extends BaseDialog implements PayView {
         setCancelable(false);
         payPresenter = new PayPresenter();
         payPresenter.attachView(this);
+        payPresenter.onStart();
         setOnCancelClickListener(view1 -> {
             if (onCancelPayListener != null) onCancelPayListener.onCancel(orderId);
             if (!TextUtils.isEmpty(orderId)) {
@@ -167,6 +169,13 @@ public class ZhifuDialog extends BaseDialog implements PayView {
     public void show() {
         super.show();
         EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void dismiss() {
+        super.dismiss();
+        payPresenter.detachView();
+        payPresenter.onDestroy();
     }
 
     @Override
