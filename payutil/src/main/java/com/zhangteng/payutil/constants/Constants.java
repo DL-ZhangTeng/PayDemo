@@ -20,7 +20,7 @@ public interface Constants {
      */
     String USERID = "";
 
-    String HOST = "192.168.1.1";
+    String HOST = "http://192.168.1.1";
     int SUCCESS = 100;//操作成功
     int PERMISSION_DENIED = 401;//权限不够
     int DEBLOCKING = 423;//封号
