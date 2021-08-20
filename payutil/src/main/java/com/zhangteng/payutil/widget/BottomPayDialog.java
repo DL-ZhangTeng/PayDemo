@@ -3,8 +3,14 @@ package com.zhangteng.payutil.widget;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -29,9 +35,9 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
 /**
- * 支付对话框
- * 已实现支付业务，生成订单id后对ZhifuDialog设置orderId即可走支付流程，设置回调OnPayResultListener获取支付结果（生成订单id与取消订单的业务未实现）
- * ZhifuDialog zhifuDialog = new ZhifuDialog(this);
+ * 支付对话框(底部弹出)
+ * 已实现支付业务，生成订单id后对BottomPayDialog设置orderId即可走支付流程，设置回调OnPayResultListener获取支付结果（生成订单id与取消订单的业务未实现）
+ * BottomPayDialog zhifuDialog = new BottomPayDialog(this);
  * zhifuDialog.setOnCancelPayListener(orderId -> {
  * presenter.deleteOrder(goodsOrder.getId());
  * if (zhifuDialog.isShowing()) zhifuDialog.dismiss();
@@ -56,17 +62,24 @@ import java.text.DecimalFormat;
  * @author Swing
  * @date 2019-06-20
  */
-public class ZhifuDialog extends BaseDialog implements PayView {
+public class BottomPayDialog extends BaseDialog implements PayView {
     private RadioButton walletDialogWalletRb;
     private TextView walletDialogTishiTv;
     private RadioButton walletDialogAliRb;
     private RadioButton walletDialogWxRb;
     private TextView walletDialogMoneyTv;
-
+    private TextView walletDialogOrderInfo;
+    private TextView walletDialogTotalValue;
+    private TextView walletDialogConfirm;
+    private ImageView walletDialogPayClose;
     /**
      * 余额
      */
     private BigDecimal balance;
+    /**
+     * 支付内容
+     */
+    private String content;
     /**
      * 支付金额
      */
@@ -76,7 +89,7 @@ public class ZhifuDialog extends BaseDialog implements PayView {
      */
     private String orderId;
     /**
-     * 各个模块名【1补贴 2悬赏 3笔记 4秀场】
+     * 各个模块名
      */
     private int typeName;
     private PayPresenter payPresenter;
@@ -89,16 +102,30 @@ public class ZhifuDialog extends BaseDialog implements PayView {
 
     private LoadViewHelper loadViewHelper;
 
-    public ZhifuDialog(@NonNull Activity context) {
+    public BottomPayDialog(@NonNull Activity context) {
         super(context, R.style.SelfDialog);
         this.activity = new WeakReference<>(context);
     }
 
-    public ZhifuDialog(@NonNull Activity context, BigDecimal balance, float amount) {
+    public BottomPayDialog(@NonNull Activity context, float amount) {
         super(context, R.style.SelfDialog);
         this.activity = new WeakReference<>(context);
-        setBalance(balance);
         setPaymentAmount(amount);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Window window = getWindow();
+        WindowManager.LayoutParams params = window.getAttributes();
+        params.width = ViewGroup.LayoutParams.MATCH_PARENT;
+        params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        params.gravity = Gravity.BOTTOM;
+        window.setAttributes(params);
+        window.setWindowAnimations(R.style.showAsDropUp);
+        window.setBackgroundDrawableResource(android.R.color.transparent);
+        setCanceledOnTouchOutside(false);
+        setCancelable(false);
     }
 
     @Override
@@ -123,11 +150,21 @@ public class ZhifuDialog extends BaseDialog implements PayView {
         walletDialogAliRb = view.findViewById(R.id.wallet_dialog_ali_rb);
         walletDialogWxRb = view.findViewById(R.id.wallet_dialog_wx_rb);
         walletDialogMoneyTv = view.findViewById(R.id.wallet_dialog_money_tv);
-        setCanceledOnTouchOutside(false);
-        setCancelable(false);
+        walletDialogOrderInfo = view.findViewById(R.id.wallet_dialog_order_info);
+        walletDialogTotalValue = view.findViewById(R.id.wallet_dialog_totalValue);
+        walletDialogConfirm = view.findViewById(R.id.wallet_dialog_confirm);
+        walletDialogPayClose = view.findViewById(R.id.wallet_dialog_pay_close);
+
         payPresenter = new PayPresenter();
         payPresenter.attachView(this);
         payPresenter.onStart();
+        walletDialogPayClose.setOnClickListener(v -> {
+            if (onCancelPayListener != null) onCancelPayListener.onCancel(orderId);
+            if (!TextUtils.isEmpty(orderId)) {
+                cancelPayOrder(orderId);
+            }
+            if (isShowing()) dismiss();
+        });
         setOnCancelClickListener(view1 -> {
             if (onCancelPayListener != null) onCancelPayListener.onCancel(orderId);
             if (!TextUtils.isEmpty(orderId)) {
@@ -140,29 +177,18 @@ public class ZhifuDialog extends BaseDialog implements PayView {
                 createPayOrder(orderId);
             if (onConfirmPayListener != null) onConfirmPayListener.onConfirm(orderId);
         });
-        walletDialogWalletRb.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (b) {
-                walletDialogAliRb.setChecked(false);
-                walletDialogWxRb.setChecked(false);
-                if (onItemOnClickListener != null) onItemOnClickListener.OnItemClicked(view, 0);
-            }
-        });
         walletDialogAliRb.setOnCheckedChangeListener((compoundButton, b) -> {
             if (b) {
-                walletDialogWalletRb.setChecked(false);
                 walletDialogWxRb.setChecked(false);
                 if (onItemOnClickListener != null) onItemOnClickListener.OnItemClicked(view, 1);
             }
         });
         walletDialogWxRb.setOnCheckedChangeListener((compoundButton, b) -> {
             if (b) {
-                walletDialogWalletRb.setChecked(false);
                 walletDialogAliRb.setChecked(false);
                 if (onItemOnClickListener != null) onItemOnClickListener.OnItemClicked(view, 2);
             }
         });
-        //获取钱包余额
-//        payPresenter.getBalance();
     }
 
     @Override
@@ -187,15 +213,15 @@ public class ZhifuDialog extends BaseDialog implements PayView {
     /**
      * 订单id
      */
-    public ZhifuDialog setOrderId(String orderId) {
+    public BottomPayDialog setOrderId(String orderId) {
         this.orderId = orderId;
         return this;
     }
 
     /**
-     * 各个模块名【1补贴 2悬赏 3笔记 4秀场】
+     * 各个模块名
      */
-    public ZhifuDialog setTypeName(int typeName) {
+    public BottomPayDialog setTypeName(int typeName) {
         this.typeName = typeName;
         return this;
     }
@@ -205,10 +231,12 @@ public class ZhifuDialog extends BaseDialog implements PayView {
      *
      * @param amount 支付金额
      */
-    public ZhifuDialog setPaymentAmount(float amount) {
+    public BottomPayDialog setPaymentAmount(float amount) {
         this.amount = amount;
-        initTishi();
-        walletDialogMoneyTv.setText(new DecimalFormat("0.00").format(amount));
+        String total = new DecimalFormat("0.00").format(amount);
+        walletDialogTotalValue.setText(String.format("%s元", total));
+        walletDialogMoneyTv.setText(total);
+        walletDialogConfirm.setText(String.format("确认支付%s元", total));
         return this;
     }
 
@@ -217,7 +245,7 @@ public class ZhifuDialog extends BaseDialog implements PayView {
      *
      * @param balance 余额
      */
-    public ZhifuDialog setBalance(BigDecimal balance) {
+    public BottomPayDialog setBalance(BigDecimal balance) {
         this.balance = balance;
         initTishi();
         walletDialogWalletRb.setText(String.format("钱包(剩余%s元)", balance.toString()));
@@ -239,22 +267,33 @@ public class ZhifuDialog extends BaseDialog implements PayView {
         }
     }
 
-    public ZhifuDialog setOnItemOnClickListener(OnItemOnClickListener onItemOnClickListener) {
+    /**
+     * @param content 设置订单信息
+     * @description 设置支付content
+     */
+    public BottomPayDialog setWalletDialogOrderInfo(String content) {
+        this.content = content;
+        walletDialogOrderInfo.setVisibility(View.VISIBLE);
+        walletDialogOrderInfo.setText(content);
+        return this;
+    }
+
+    public BottomPayDialog setOnItemOnClickListener(OnItemOnClickListener onItemOnClickListener) {
         this.onItemOnClickListener = onItemOnClickListener;
         return this;
     }
 
-    public ZhifuDialog setOnPayResultListener(OnPayResultListener onPayResultListener) {
+    public BottomPayDialog setOnPayResultListener(OnPayResultListener onPayResultListener) {
         this.onPayResultListener = onPayResultListener;
         return this;
     }
 
-    public ZhifuDialog setOnConfirmPayListener(OnConfirmPayListener onConfirmPayListener) {
+    public BottomPayDialog setOnConfirmPayListener(OnConfirmPayListener onConfirmPayListener) {
         this.onConfirmPayListener = onConfirmPayListener;
         return this;
     }
 
-    public ZhifuDialog setOnCancelPayListener(OnCancelPayListener onCancelPayListener) {
+    public BottomPayDialog setOnCancelPayListener(OnCancelPayListener onCancelPayListener) {
         this.onCancelPayListener = onCancelPayListener;
         return this;
     }
@@ -267,9 +306,7 @@ public class ZhifuDialog extends BaseDialog implements PayView {
     @SuppressLint("DefaultLocale")
     @Override
     public void createPayOrder(String orderId) {
-        if (walletDialogWalletRb.isChecked()) {
-            payPresenter.createPayOrderOfWallet(orderId, typeName);
-        } else if (walletDialogAliRb.isChecked()) {
+        if (walletDialogAliRb.isChecked()) {
             payPresenter.createPayOrder(orderId, typeName);
         } else if (walletDialogWxRb.isChecked()) {
             payPresenter.createPayOrderOfWX(orderId, typeName);
@@ -301,6 +338,11 @@ public class ZhifuDialog extends BaseDialog implements PayView {
         payResult(flag, orderId);
     }
 
+    @Override
+    public void cancelPayOrderFinish(Boolean flag) {
+
+    }
+
     /**
      * 支付结果从后台拿到后关闭页面
      *
@@ -313,7 +355,7 @@ public class ZhifuDialog extends BaseDialog implements PayView {
     }
 
     @Override
-    public void showbalance(BigDecimal balance) {
+    public void showBalance(BigDecimal balance) {
         setBalance(balance);
     }
 

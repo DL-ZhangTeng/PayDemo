@@ -7,6 +7,7 @@ import com.zhangteng.payutil.http.PayUtilApi;
 import com.zhangteng.payutil.http.model.imodel.IPayModel;
 import com.zhangteng.payutil.http.response.AliPayResponse;
 import com.zhangteng.payutil.http.response.BalanceResponse;
+import com.zhangteng.payutil.http.response.BaseResponse;
 import com.zhangteng.payutil.http.response.PayResultResponse;
 import com.zhangteng.payutil.http.response.Request;
 import com.zhangteng.payutil.http.response.WXPayResponse;
@@ -102,6 +103,41 @@ public class PayModel extends BaseModel implements IPayModel {
         new Request<WalletPayResponse>().request(GlobalHttpUtils.getInstance().createService(PayUtilApi.class).createPayOrderOfWallet(requestBody), new BaseHttpEntity<WalletPayResponse>() {
             @Override
             public void onSuccess(WalletPayResponse response) {
+                baseHttpEntity.onSuccess(true);
+            }
+
+            @Override
+            public void onNoNetworkError() {
+                super.onNoNetworkError();
+                baseHttpEntity.onNoNetworkError();
+            }
+
+            @Override
+            public void onError(int code, String error) {
+                super.onError(code, error);
+                baseHttpEntity.onError(code, error);
+            }
+
+            @Override
+            public void onHttpError(int code, String error) {
+                super.onHttpError(code, error);
+                baseHttpEntity.onHttpError(code, error);
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                baseHttpEntity.onFinish();
+            }
+        });
+    }
+
+    @Override
+    public void cancelOrder(String params, BaseHttpEntity<Boolean> baseHttpEntity) {
+        RequestBody requestBody = RequestBody.create(MediaType.parse(PayUtilApi.MediaType_Json), params);
+        new Request<>().request(GlobalHttpUtils.getInstance().createService(PayUtilApi.class).cancelOrder(requestBody), new BaseHttpEntity<BaseResponse>() {
+            @Override
+            public void onSuccess(BaseResponse response) {
                 baseHttpEntity.onSuccess(true);
             }
 

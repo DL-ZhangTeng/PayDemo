@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cl_pay_select"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="15dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginEnd="15dp"
+    android:background="@drawable/wallet_white_r8_bg"
+    android:orientation="horizontal"
+    android:paddingStart="10dp"
+    android:paddingTop="15dp"
+    android:paddingEnd="10dp"
+    android:paddingBottom="15dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="22dp"
+            android:gravity="start|center_vertical"
+            android:visibility="visible">
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_gravity="end"
+                android:src="@mipmap/icon_pay_activity_alipay" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginStart="10dp"
+                android:text="支付宝"
+                android:textColor="#ff222222"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="22dp"
+            android:layout_marginTop="18dp"
+            android:gravity="start|center_vertical"
+            android:visibility="visible">
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_gravity="end"
+                android:src="@mipmap/icon_pay_activity_wx" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginStart="10dp"
+                android:text="微信支付"
+                android:textColor="#ff222222"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="22dp"
+            android:layout_marginTop="18dp"
+            android:gravity="start|center_vertical"
+            android:visibility="visible">
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_gravity="end"
+                android:src="@mipmap/icon_pay_activity_wallet" />
+
+            <TextView
+                android:id="@+id/tv_pay_balance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginStart="10dp"
+                android:text="余额支付(¥0.00)"
+                android:textColor="#ff222222"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <RadioGroup
+        android:id="@+id/rg_pay_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RadioButton
+            android:id="@+id/rb_pay_Ali"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp"
+            android:background="@drawable/wallet_activity_selector_rb_bg"
+            android:button="@null" />
+
+        <RadioButton
+            android:id="@+id/rb_pay_wx"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_marginTop="21dp"
+            android:layout_marginBottom="3dp"
+            android:background="@drawable/wallet_activity_selector_rb_bg"
+            android:button="@null"
+            android:padding="3dp" />
+
+        <RadioButton
+            android:id="@+id/rb_pay_balance"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_marginTop="21dp"
+            android:layout_marginBottom="3dp"
+            android:background="@drawable/wallet_activity_selector_rb_bg"
+            android:button="@null" />
+
+        <TextView
+            android:id="@+id/rb_pay_balance_tishi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="80dp"
+            android:layout_marginBottom="8dp"
+            android:text="钱包余额不足请选择其他支付方式"
+            android:textColor="#ff000000"
+            android:textSize="10sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/wallet_dialog_wallet_rb"
+            app:layout_constraintStart_toStartOf="@+id/wallet_dialog_wallet_rb" />
+
+    </RadioGroup>
+</androidx.constraintlayout.widget.ConstraintLayout>

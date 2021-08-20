@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:paddingTop="30dp"
+    android:paddingBottom="30dp">
+
+    <TextView
+        android:layout_width="144dp"
+        android:layout_height="44dp"
+        android:gravity="center"
+        android:text="取消"
+        android:textColor="#ff777777"
+        android:textSize="15sp"
+        android:visibility="gone" />
+
+    <View
+        android:layout_width="@dimen/default_divider_size"
+        android:layout_height="44dp"
+        android:background="#E6E6E6"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/wallet_dialog_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_marginStart="16.5dp"
+        android:layout_marginEnd="16.5dp"
+        android:background="@drawable/wallet_dialog_bottom_confirm_shape"
+        android:gravity="center"
+        android:text="确认支付0元"
+        android:textColor="#ffffffff"
+        android:textSize="17sp" />
+</LinearLayout>

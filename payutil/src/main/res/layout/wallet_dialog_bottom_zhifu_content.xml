@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#FFFFFF"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/wallet_dialog_title_cl"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:background="#F7F7F7"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="订单确认"
+            android:textColor="#ff3d3d3d"
+            android:textSize="17sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/wallet_dialog_pay_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="13dp"
+            android:padding="5dp"
+            android:src="@mipmap/icon_pay_bottom_dialog_close"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/wallet_dialog_order_info"
+        android:layout_width="wrap_content"
+        android:layout_height="21dp"
+        android:layout_marginStart="26.5dp"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:text=""
+        android:textColor="#ff343434"
+        android:textSize="15sp"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/wallet_dialog_title_cl" />
+
+    <TextView
+        android:id="@+id/wallet_dialog_total"
+        android:layout_width="wrap_content"
+        android:layout_height="21dp"
+        android:layout_marginStart="26.5dp"
+        android:layout_marginTop="13.5dp"
+        android:gravity="center"
+        android:text="合计费用"
+        android:textColor="#ff343434"
+        android:textSize="15sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/wallet_dialog_order_info" />
+
+    <TextView
+        android:id="@+id/wallet_dialog_totalValue"
+        android:layout_width="wrap_content"
+        android:layout_height="21dp"
+        android:layout_marginEnd="31dp"
+        android:gravity="center"
+        android:text="0元"
+        android:textColor="#ff343434"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/wallet_dialog_total"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/wallet_dialog_total" />
+
+    <TextView
+        android:id="@+id/wallet_dialog_money_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginBottom="35dp"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:maxLines="1"
+        android:text="0"
+        android:textColor="#ff343434"
+        android:textSize="32sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/wallet_dialog_total" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:text="元"
+        android:textColor="#ff343434"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/wallet_dialog_money_tv"
+        app:layout_constraintStart_toEndOf="@+id/wallet_dialog_money_tv" />
+
+    <RadioButton
+        android:id="@+id/wallet_dialog_ali_rb"
+        android:layout_width="match_parent"
+        android:layout_height="18.5dp"
+        android:layout_marginTop="20dp"
+        android:background="@null"
+        android:button="@null"
+        android:drawableStart="@mipmap/icon_pay_bottom_dialog_zhifubao"
+        android:drawableEnd="@drawable/wallet_dialog_bottom_selector"
+        android:drawablePadding="5.5dp"
+        android:paddingStart="26.5dp"
+        android:paddingEnd="30.5dp"
+        android:text="支付宝支付"
+        android:textColor="#ff343434"
+        android:textSize="13sp"
+        app:layout_constraintTop_toBottomOf="@+id/wallet_dialog_money_tv" />
+
+    <RadioButton
+        android:id="@+id/wallet_dialog_wx_rb"
+        android:layout_width="match_parent"
+        android:layout_height="18.5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@null"
+        android:button="@null"
+        android:drawableStart="@mipmap/icon_pay_bottom_dialog_weixin"
+        android:drawableEnd="@drawable/wallet_dialog_bottom_selector"
+        android:drawablePadding="5.5dp"
+        android:paddingStart="26.5dp"
+        android:paddingEnd="30.5dp"
+        android:text="微信支付"
+        android:textColor="#ff343434"
+        android:textSize="13sp"
+        app:layout_constraintTop_toBottomOf="@+id/wallet_dialog_ali_rb" />
+
+    <RadioButton
+        android:id="@+id/wallet_dialog_wallet_rb"
+        android:layout_width="match_parent"
+        android:layout_height="18.5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@null"
+        android:button="@null"
+        android:drawableStart="@mipmap/icon_pay_bottom_dialog_jinbi"
+        android:drawableEnd="@drawable/wallet_dialog_bottom_selector"
+        android:drawablePadding="5.5dp"
+        android:paddingStart="26.5dp"
+        android:paddingEnd="30.5dp"
+        android:text="微信支付"
+        android:textColor="#ff343434"
+        android:textSize="13sp"
+        app:layout_constraintTop_toBottomOf="@+id/wallet_dialog_wx_rb" />
+
+    <TextView
+        android:id="@+id/wallet_dialog_tishi_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:paddingStart="26.5dp"
+        android:paddingEnd="30.5dp"
+        android:text="钱包余额不足请选择其他支付方式"
+        android:textColor="#fffe5722"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/wallet_dialog_wallet_rb" />
+</androidx.constraintlayout.widget.ConstraintLayout>

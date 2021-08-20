@@ -15,6 +15,8 @@ public interface IPayModel extends IModel {
 
     public void createPayOrderOfWallet(String params, BaseHttpEntity<Boolean> baseHttpEntity);
 
+    public void cancelOrder(String params, BaseHttpEntity<Boolean> baseHttpEntity);
+
     public void getPayResult(String params, BaseHttpEntity<PayResultResponse.ResultBean> baseHttpEntity);
 
     public void getBalance(BaseHttpEntity<BigDecimal> baseHttpEntity);

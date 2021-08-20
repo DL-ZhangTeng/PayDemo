@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.zhangteng.payutil.widget.ZhifuDialog;
+import com.zhangteng.payutil.widget.CenterPayDialog;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -12,7 +12,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        new ZhifuDialog(this)
+        new CenterPayDialog(this)
                 .setPaymentAmount(1000 / 100f)
                 .setOrderId("123456...")
                 .setTypeName(3)

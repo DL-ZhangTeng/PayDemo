@@ -133,6 +133,36 @@ public class PayPresenter extends BasePresenter<PayView, IPayModel> implements I
         });
     }
 
+    @Override
+    public void cancelOrder(String goodsOrderId) {
+        getMModel().cancelOrder(goodsOrderId, new BaseHttpEntity<Boolean>(getMView().get()) {
+            @Override
+            public void onSuccess(Boolean data) {
+                getMView().get().cancelPayOrderFinish(data);
+            }
+
+            @Override
+            public void onError(int code, String error) {
+                super.onError(code, error);
+                getMView().get().cancelPayOrderFinish(false);
+            }
+
+            @Override
+            public void onNoNetworkError() {
+                super.onNoNetworkError();
+                getMView().get().cancelPayOrderFinish(false);
+                ToastUtils.Companion.showShort(getMView().get().getViewContext(), "无网络，请检测网络");
+            }
+
+            @Override
+            public void onHttpError(int code, String error) {
+                super.onHttpError(code, error);
+                getMView().get().cancelPayOrderFinish(false);
+                ToastUtils.Companion.showShort(getMView().get().getViewContext(), "网络异常");
+            }
+        });
+    }
+
     /**
      * @param id        订单号
      * @param payType   支付方式, 1: 支付宝手机app支付 2： 微信
@@ -186,7 +216,7 @@ public class PayPresenter extends BasePresenter<PayView, IPayModel> implements I
             @Override
             public void onSuccess(BigDecimal data) {
                 if (data != null)
-                    getMView().get().showbalance(data);
+                    getMView().get().showBalance(data);
             }
         });
     }

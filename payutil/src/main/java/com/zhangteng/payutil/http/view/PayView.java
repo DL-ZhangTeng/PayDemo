@@ -22,9 +22,11 @@ public interface PayView extends BaseLoadingView<Object> {
 
     void walletPayCreateOrderFinish(int payResult);
 
+    void cancelPayOrderFinish(Boolean flag);
+
     void payResult(int payResult, String payNo);
 
-    void showbalance(BigDecimal balance);
+    void showBalance(BigDecimal balance);
 
     @Override
     default void inflateView(Object data) {

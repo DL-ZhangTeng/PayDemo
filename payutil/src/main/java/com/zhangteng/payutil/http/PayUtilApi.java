@@ -2,6 +2,7 @@ package com.zhangteng.payutil.http;
 
 import com.zhangteng.payutil.http.response.AliPayResponse;
 import com.zhangteng.payutil.http.response.BalanceResponse;
+import com.zhangteng.payutil.http.response.BaseResponse;
 import com.zhangteng.payutil.http.response.PayResultResponse;
 import com.zhangteng.payutil.http.response.WXPayResponse;
 import com.zhangteng.payutil.http.response.WalletPayResponse;
@@ -12,6 +13,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -48,6 +50,12 @@ public interface PayUtilApi {
     @Headers(value = {MediaType_Name + MediaType_Json, Secret_Name + Secret_True})
     @POST("/pay/wallet/walletPay")
     Observable<WalletPayResponse> createPayOrderOfWallet(@Body RequestBody requestBody);
+    //</editor-fold>
+
+    //<editor-fold desc="取消订单">
+    @Headers(value = {MediaType_Name + MediaType_Json})
+    @POST("/api/order/cancel")
+    Observable<BaseResponse> cancelOrder(@Body RequestBody requestBody);
     //</editor-fold>
 
     //<editor-fold desc="支付查询订单支付结果">
